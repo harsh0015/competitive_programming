@@ -76,15 +76,46 @@ ll modPow(ll a, ll b){
 
 
 void solve(){
-   ll x,w,y,z;cin>>w>>x>>y>>z;
-   if(y*z+w<x){
-    cout <<"unfilled"<<endl;
+   
+   ll n;cin>>n;
+   vector<ll>v(n);
+   for(ll i=0;i<n;i++)cin>>v[i];
+   vector<vector<ll>>count(n,vector<ll>(32,0));
+   for(ll i=0;i<30;i++)if(v[0]&(1<<i))count[0][i]=1;
+   for(ll i=1;i<n;i++){
+    for(ll j=0;j<30;j++){
+        count[i][j]=count[i-1][j];
+        if(v[i]&(1<<j))count[i][j]++;
+    }
    }
-   else if(y*z+w==x){
-    cout <<"filled"<<endl;
-    return;
+
+   vector<bool>fin(32,true);
+   for(ll i=0;i<n;i++){
+     for(ll j=0;j<30;j++){
+        if(v[i]&(1<<j))continue;
+        else fin[j]=false;
+     }
    }
-   else cout <<"overflow"<<endl;
+   
+   for(ll i=0;i<30;i++){
+    if(fin[i]){
+        for(ll j=0;j<n;j++){
+            v[j]=v[j]-(1<<i);
+        }
+    }
+   }
+   ll c=0;
+   ll sum=-1;
+   for(ll i=0;i<n;i++){
+    if(sum==-1)sum=v[i];
+    else sum=sum&v[i];
+    if(sum==0){
+        c++;
+        sum=-1;
+    }
+   }
+   
+   cout <<n-c<<endl;
 }
  
  //////

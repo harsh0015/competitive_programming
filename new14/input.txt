@@ -1,15 +1,9 @@
+4
+4
+0 0 0 1
 2
-2
-a
-ab
-b
-cd
-acd
-3
-z
-a
-a
-aa
-yakumo
-ran
-yakumoran
+1 1
+6
+1 2 3 4 5 6
+4
+2 28 3 22
