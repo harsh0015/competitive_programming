@@ -76,17 +76,7 @@ ll modPow(ll a, ll b){
 
 
 void solve(){
-   ll n,x,y;cin>>n>>x>>y;
-   vector<ll>v(n);
-   for(ll i=0;i<n;i++)cin>>v[i];
-
-  ll sum=accumulate(all(v),0ll);
-  if((sum+x+y)%2==0){
-    cout <<"Alice"<<endl;
-  }
-  else{
-    cout <<"Bob"<<endl;
-  }
+   int n,k;cin>>n>>k;
 }
  
  //////
