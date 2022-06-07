@@ -76,43 +76,7 @@ ll modPow(ll a, ll b){
 
 
 void solve(){
-   ll n;cin>>n;
-   vector<ll>v(n);
-  for(int i=0;i<n;i++)cin>>v[i];
-
-
-   for(ll i=0;i<32;i++){
-    vector<vector<ll>>split;
-    ll sum=0;
-    ll l=0;
-    
-    for(ll j=0;j<n;j++){
-        sum+=v[j];
-        if(sum&(1<<i)){
-            split.push_back({l,j});
-            sum=0;
-            l=j+1;
-        }
-    }
-    if(split.size()==1 && split.back()[1]==n-1)continue;
-
-    if( split.size()>1){
-
-      
-        if(split.back()[1]!=n-1){
-            split.back()[1]=n-1;
-        }
-
-        
-        cout <<"YES"<<endl;
-        cout <<split.size()<<endl;
-        for(auto x:split)cout <<x[0]+1<<" "<<x[1]+1<<endl;
-            return;
-    }
-
-   }
-   cout <<"NO"<<endl;
-   return;
+   
 }
  
  //////
