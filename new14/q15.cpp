@@ -74,81 +74,65 @@ ll modPow(ll a, ll b){
             return divide(fact[n],mul(fact[r],fact[n-r]));
         }
 
-vector<ll>sz;
-vector<ll>par;
- 
- ll dfs(ll ind,ll p,vector<vector<ll>>&adj){
-   par[ind]=p;
 
-   ll s=1;
-   for(auto x:adj[ind]){
-    if(x!=par[ind]){
-        s+=dfs(x,ind,adj);
-    }
-   }
-   return sz[ind]=s;
- }
 void solve(){
-
-    ll n;cin>>n;
-    vector<vector<ll>>adj(n);
-    for(ll i=0;i<n-1;i++){
-        ll a,b;cin>>a>>b;
-        a--;
-        b--;
-        adj[a].push_back(b);
-        adj[b].push_back(a);
-    }
-   sz.resize(n);
-   par.resize(n);
-    ll t=dfs(0,-1,adj);
-
    
-
-  
-   ll ans=0;
-   queue<ll>q;
-   for(auto x:adj[0]){
-      q.push(x);
+   ll n,m;cin>>n>>m;
+   vector<string>mat;
+   for(ll i=0;i<n;i++){
+    string s;cin>>s;
+    mat.push_back(s);
    }
+   vector<ll>x,y;
+   for(ll i=0;i<n;i++)
+    for(ll j=0;j<m;j++)
+        if(mat[i][j]=='B'){
+            x.push_back(i);
+            y.push_back(j);
+        }
 
-   while(!q.empty()){
-    
-     if(q.size()==1){
-        ll x=q.front();
-        q.pop();
-        ans+=sz[x]-1;
-        break;
+    sort(all(x));
+    sort(all(y));
+    vector<ll>prex(x.size());
+    prex[0]=x[0];
+    for(ll i=1;i<x.size();i++)prex[i]=prex[i-1]+x[i];
+     vector<ll>prey(y.size());
+    prey[0]=y[0];
+    for(ll i=1;i<y.size();i++)prey[i]=prey[i-1]+y[i];
+  ll mx=INT_MAX;
+ ll indx=-1;
+  for(ll i=0;i<n;i++){
+     ll t=max(abs(i-x[0]),abs(i-x.back()));
+     if(t<mx){
+        mx=t;
+        indx=i;
      }
-     else{
-        ll a=q.front();
-        q.pop();
-        ll b=q.front();
-        q.pop();
+  }
+  // cout <<mx<<endl;
+  
+  ll my=INT_MAX;
+ ll indy=-1;
+  for(ll i=0;i<m;i++){
+     ll t=max(abs(i-y[0]),abs(i-y.back()));
+     if(t<my){
+        my=t;
+        indy=i;
+     }
+  }
+  // cout <<my<<endl;
+  
+  cout <<indx+1<<" "<<indy+1<<endl;
+//   int ans=0;
+//   for(auto a:x)ans+=abs(a-indx-1);
+//     for(auto b:y)ans+=abs(b-indy-1);
+//     cout <<ans<<endl;
+// ans=0;
+// cout <<6<<" "<<5<<endl;
+// for(auto a:x)ans+=abs(a-5-1);
+//     for(auto b:y)ans+=abs(b-4-1);
+//         cout <<ans<<endl;
 
-        ll x=sz[a]-1;
-        ll ma=0;
-         for(auto t:adj[b])if(t!=par[b])ma=max(sz[t]-1,ma);
-        x+=ma;
-        ll y=sz[b]-1;
-        ll ma1=0;
-        for(auto t:adj[a])if(t!=par[a])ma1=max(sz[t]-1,ma1);
-        y+=ma1;
-   
-       if(x>y){
-         ans+=sz[a]-1;
-         for(auto x:adj[b])if(x!=par[b])q.push(x);
-         
-        }
-        else{
-            ans+=sz[b]-1;
-         for(auto x:adj[a])if(x!=par[a])q.push(x);
-        }
 
-    } 
-   }
-
-   cout <<ans<<endl;
 }
  
  //////

@@ -74,81 +74,54 @@ ll modPow(ll a, ll b){
             return divide(fact[n],mul(fact[r],fact[n-r]));
         }
 
-vector<ll>sz;
-vector<ll>par;
- 
- ll dfs(ll ind,ll p,vector<vector<ll>>&adj){
-   par[ind]=p;
 
-   ll s=1;
-   for(auto x:adj[ind]){
-    if(x!=par[ind]){
-        s+=dfs(x,ind,adj);
-    }
-   }
-   return sz[ind]=s;
- }
 void solve(){
-
-    ll n;cin>>n;
-    vector<vector<ll>>adj(n);
-    for(ll i=0;i<n-1;i++){
-        ll a,b;cin>>a>>b;
-        a--;
-        b--;
-        adj[a].push_back(b);
-        adj[b].push_back(a);
-    }
-   sz.resize(n);
-   par.resize(n);
-    ll t=dfs(0,-1,adj);
-
+   ll n,k;cin>>n>>k;
+   vector<ll>v(n);
+   for(ll i=0;i<n;i++)cin>>v[i];
    
-
-  
    ll ans=0;
-   queue<ll>q;
-   for(auto x:adj[0]){
-      q.push(x);
+  
+   map<ll,ll>m;
+   vector<ll>vv(k,0);
+   for(ll i=0;i<n;i++){
+    ans+=v[i]/k;
+    vv[v[i]%k]++;
    }
+   ll i=1;
+   ll j=k-1;
 
-   while(!q.empty()){
-    
-     if(q.size()==1){
-        ll x=q.front();
-        q.pop();
-        ans+=sz[x]-1;
-        break;
+   while(i<=j){
+
+     if(vv[i]==0){
+        i++;
+        continue;
      }
-     else{
-        ll a=q.front();
-        q.pop();
-        ll b=q.front();
-        q.pop();
-
-        ll x=sz[a]-1;
-        ll ma=0;
-         for(auto t:adj[b])if(t!=par[b])ma=max(sz[t]-1,ma);
-        x+=ma;
-        ll y=sz[b]-1;
-        ll ma1=0;
-        for(auto t:adj[a])if(t!=par[a])ma1=max(sz[t]-1,ma1);
-        y+=ma1;
-   
-       if(x>y){
-         ans+=sz[a]-1;
-         for(auto x:adj[b])if(x!=par[b])q.push(x);
-         
+     if(vv[j]==0){
+        j--;
+        continue;
+     }
+     if(i!=j){
+        if(i+j<k){
+            i++;
+            continue;
         }
         else{
-            ans+=sz[b]-1;
-         for(auto x:adj[a])if(x!=par[a])q.push(x);
+            ll m=min(vv[i],vv[j]);
+            ans+=m;
+            vv[i]-=m;
+            vv[j]-=m;
         }
-
-    } 
+     }
+     else{
+        ll t=vv[i]/2;
+        if(2*i>=k)ans+=t;
+        break;
+     }
    }
 
    cout <<ans<<endl;
+
 }
  
  //////
