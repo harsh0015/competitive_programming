@@ -27,6 +27,8 @@ const ll M = 1e9 + 7, inf = 1e18;
 #define pp pop_back
 #define rep(i,a,b) for(ll i=a;i<b;i++)
 #define repi(i,a,b) for(ll i=b-1;i>=a;i--)
+ll MM=1e15;
+ll mm=-1e15;
 
  ll mod(ll x){
             return ((x%M + M)%M);
@@ -76,19 +78,77 @@ ll modPow(ll a, ll b){
 
 
 void solve(){
-   vector<string>v;
-   for(int i=0;i<8;i++){
-    string s;cin>>s;
-    v.push_back(s);
-   }
-   for(int i=1;i<8;i++){
-    for(int j=1;j<8;j++){
-        if(v[i][j]=='#' && v[i-1][j-1]=='#' && v[i-1][j+1]=='#' && v[i+1][j-1]=='#' && v[i+1][j+1] == '#'){
-            cout<<i+1<<" "<<j+1<<endl;
-            return;
+   ll n;cin>>n;
+   vector<ll>v(n);
+   for(ll i=0;i<n;i++)cin>>v[i];
+   ll sum=accumulate(all(v),0ll);
+  vector<ll>pre(n);
+  pre[0]=v[0];
+  for(ll i=1;i<n;i++)pre[i]=pre[i-1]+v[i];
+
+  
+ 
+   vector<ll>time(n);
+   time[0]=v[0];
+    ll val=v[0];
+  
+   for(ll i=1;i<n;i++){
+       ll extra=val*i-pre[i-1];
+       // cout <<i<<" "<<extra<<endl;
+       v[i]-=extra+val;
+        if(v[i]<0){
+            time[i]=val;
+            continue;
         }
-    }
+       ll y=v[i]/(i+1);
+       if(v[i]%(i+1)!=0)y++;
+       if(y>0)val+=y;
+       time[i]=val;
    }
+   // cout <<pre[n-1]<<endl;
+   
+   vector<ll>flow(n);
+   flow[0]=pre[n-1];
+   for(ll i=1;i<n;i++){
+     ll low=1;
+     ll high=1e13;
+     ll ans=1e15;
+     while(low<=high){
+        ll mid=(low+high)/2;
+
+         if(mid<time[i] || (pre[n-1]>mid*(i+1))){
+            low=mid+1;
+            continue;
+         }
+         else{
+            ans=min(ans,mid);
+            high=mid-1;
+         }
+     }
+   flow[i]=ans;
+   }
+  reverse(all(flow));
+  // for(auto x:flow)cout <<x<<" ";
+  //   cout <<endl;
+ 
+    ll q;cin>>q;
+    while(q--){
+        ll t;cin>>t;
+        if(n*t<sum){
+            cout <<-1<<endl;
+            continue;
+        }
+       else{
+         auto it=upper_bound(all(flow),t);
+         if(it==flow.begin()){
+            cout <<-1<<endl;
+            continue;
+         }
+         it--;
+         cout <<n-ll(it-flow.begin())<<endl;
+       }
+      
+    }
 }
  
  //////
@@ -105,7 +165,7 @@ freopen("output.txt", "w", stdout);
 
     int t = 1;
    
-    cin>>t;
+    
    for(int i=1;i<=t;i++){
      // cout<<"Case #"<<i<<":"<<" ";
     solve();
